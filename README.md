@@ -18,5 +18,5 @@
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Criação de um projeto vazio<br />
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adição da pasta $(SolutionDir)lib\GLFW\include para utilizar o GLFW no momento de compilação (Remove os erros apresentados na IDE)<br />
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adição da pasta $(SolutionDir)lib\GLFW\lib-vc2019 para o linker utilizar, irá buscar a glfw3.lib após a compilação para utilização no código.<br />
-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Após adicionar a pasta, é necessário especificar quais .libs irei utilizar. O GLFW utiliza a glfw3.lib; O OpenGL utiliza a opengl32.lib; Para as demais construções no Windows é necessário utilizar as seguintes libs User32.lib;Gdi32.lib;Shell32.lib;<br />
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Após adicionar a pasta, é necessário especificar quais .libs irei utilizar. O GLFW utiliza a glfw3.lib; O OpenGL utiliza a opengl32.lib; Para as demais construções no Windows é necessário utilizar as seguintes libs User32.lib;Gdi32.lib;Shell32.lib;<br />
 <br />
