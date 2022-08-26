@@ -21,14 +21,14 @@
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Após adicionar a pasta, é necessário especificar quais .libs irei utilizar. O GLFW utiliza a glfw3.lib; O OpenGL utiliza a opengl32.lib; Para as demais construções no Windows é necessário utilizar as seguintes libs User32.lib;Gdi32.lib;Shell32.lib;<br>
 
 ## 4 - GLEW
-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenGL é implementado pelo driver da placa de vídeo, para isso preciso das assinaturas das funções implementadas
-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Após o Download, adicionar a pasta $(SolutionDir)lib\GLEW\glew-2.1.0\include no Include e a pasta $(SolutionDir)lib\GLEW\glew-2.1.0\lib\Release\Win32 no Linker
-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adicionar a lib que quero em Entrada no Linker glew32s.lib (Há duas libs na pasta, porém a com s no fim é para link estático sem a necessidade do .dll)
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenGL é implementado pelo driver da placa de vídeo, para isso preciso das assinaturas das funções implementadas<br>
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Após o Download, adicionar a pasta $(SolutionDir)lib\GLEW\glew-2.1.0\include no Include e a pasta $(SolutionDir)lib\GLEW\glew-2.1.0\lib\Release\Win32 no Linker<br>
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adicionar a lib que quero em Entrada no Linker glew32s.lib (Há duas libs na pasta, porém a com s no fim é para link estático sem a necessidade do .dll)<br>
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A biblioteca GL/glew.h precisa ser incluída antes que qualquer outra biblioteca OpenGL no programa
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ao utilizar static link, irei ter erro de linker na hora de usar a função glewInit, pois ele esperar que seja linkado através de uma DLL com GLEW_BUILD.<br>
+ - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Para resolver este problema, preciso definir GLEW_STATIC<br>
+ - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANTE** Como fazer: Definir como preprocessor GLEW_STATIC (No Visual Studio é em Propriedades->C/C++->Pré-Processador)<br>
+- **IMPORTANTE** glewInit() não pode ser invocado antes de criar um contexto válido na aplicação (glfwMakeContextCurrent(window);)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL: http://glew.sourceforge.net/
-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ao utilizar static link, irei ter erro de linker na hora de usar a função glewInit, pois ele esperar que seja linkado através de uma DLL com GLEW_BUILD.
- - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Para resolver este problema, preciso definir GLEW_STATIC
- - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;** IMPORTANTE ** Como fazer: Definir como preprocessor GLEW_STATIC (No Visual Studio é em Propriedades->C/C++->Pré-Processador)
-- ** IMPORTANTE ** glewInit() não pode ser invocado antes de criar um contexto válido na aplicação (glfwMakeContextCurrent(window);)
 
-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<!-- - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
