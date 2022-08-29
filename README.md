@@ -31,13 +31,13 @@
   - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANTE** glewInit() não pode ser invocado antes de criar um contexto válido na aplicação (glfwMakeContextCurrent(window);)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL: http://glew.sourceforge.net/
 
-<<<<<<< HEAD
 ## 5 - Vertex Buffers e Shaders
-Vertex Buffer é um buffer alocado na GPU (VRAM)
-Shader é um código que irá ser executado na GPU, nele informo como ele precisa ler os Vertex Buffers e desenhar na tela o que eu quero
-OpenGL funciona como uma máquina de estado. Ele irá desenhar a partir do Vertex Buffer e Shader que eu selecionar, não sendo necessário eu falar o que precisa fazer.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vertex Buffer é um buffer alocado na GPU (VRAM)<br>
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shader é um código que irá ser executado na GPU, nele informo como ele precisa ler os Vertex Buffers e desenhar na tela o que eu quero.<br>
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenGL funciona como uma máquina de estado. Ele irá desenhar a partir do Vertex Buffer e Shader que eu selecionar, não sendo necessário eu falar o que precisa fazer.<br>
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Como o OpenGL é executado como máquina de estado, tudo tem um ID (Incluindo os Buffers), para ele poder se localizar
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GL_ARRAY_BUFFER indica que tipo (target) é a estrutura que eu estou utilizando, neste caso é um Buffer genérico para armazenar Vertex
+
+docs.gl = Link com uma boa documentação
 
 <!-- - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-=======
-<!-- - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
->>>>>>> cd3d6a42bcae4639dd0b852c51fce9026d55064c

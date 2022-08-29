@@ -34,17 +34,32 @@ int main(void)
     // Retornar versão do OpenGL
     std::cout << glGetString(GL_VERSION) << std::endl;
 
+    float triangle_position[6] = {
+        -0.5f, -0.5f,
+         0.0f, 0.5f,
+         0.5f, -0.5f
+    };
+
+    // Quantidade Vertex Buffers que irei criar e onde eu vou armazenar a referencia (ID do buffer gerado)
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    // Para usar o buffer eu preciso passar o tipo final dele e ID dele
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    // Após selecionar, preciso colocar dados dentro do Buffer
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), triangle_position, GL_STATIC_DRAW);
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glBegin(GL_TRIANGLES);
+        // OpenGL Legacy
+        /*glBegin(GL_TRIANGLES);
         glVertex2f(-0.5f, -0.5f);
         glVertex2f(0.0f, 0.5f);
         glVertex2f(0.5f, -0.5f);
-        glEnd();
+        glEnd();*/
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
