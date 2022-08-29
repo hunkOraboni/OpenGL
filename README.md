@@ -37,6 +37,8 @@
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenGL funciona como uma máquina de estado. Ele irá desenhar a partir do Vertex Buffer e Shader que eu selecionar, não sendo necessário eu falar o que precisa fazer.<br>
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Como o OpenGL é executado como máquina de estado, tudo tem um ID (Incluindo os Buffers), para ele poder se localizar
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GL_ARRAY_BUFFER indica que tipo (target) é a estrutura que eu estou utilizando, neste caso é um Buffer genérico para armazenar Vertex
+  - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vertex Attributes -> glVertexAttribPointer() Função utilizada para definir atributos dos vertices, só pode ser chamada após a glBindBuffer(). Vou chamar ela toda vez que for definir um atributo.
+  - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANTE** É necessário habilitar a função glVertexAttribPointer(), para fazer isso é necessário acionar a função glEnableVertexAttribArray() (Funciona como máquina de estado, não precisa ser necessariamente antes)
 
 docs.gl = Link com uma boa documentação
 

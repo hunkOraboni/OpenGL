@@ -47,6 +47,16 @@ int main(void)
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     // Após selecionar, preciso colocar dados dentro do Buffer
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), triangle_position, GL_STATIC_DRAW);
+    // Definição de atributos (Posicao)
+    // 0 é o indice (primeiro atributo)
+    // 2 é o tamanho que representa cada vertex no vetor, X e Y
+    // GL_FLOAT é o tipo da variável que eu tenho
+    // GL_FALSE é se quero normalizar ou não, o float já está normalizado (Valor entre 0 e 1)
+    // stride é a quantidade de bytes que temos separando cada vertex (no caso X e Y, cada um 4 bytes, sendo 8 no total)
+    // 0 é a posição (ponteiro) onde irá começar a analisar o vetor para poder ler os valores (Já defini em glBufferData qual o vetor)
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+    // A função vai utilizar o index 0 para habilitar a leitura do array e o OpenGL saber como interpretar os dados fornecidos
+    glEnableVertexAttribArray(0); // Como funciona como máquina de estado, eu não preciso necessariamente habilitar antes de glVertexAttribPointer
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
