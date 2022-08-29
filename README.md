@@ -31,4 +31,9 @@
 - **IMPORTANTE** glewInit() não pode ser invocado antes de criar um contexto válido na aplicação (glfwMakeContextCurrent(window);)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL: http://glew.sourceforge.net/
 
+## 5 - Vertex Buffers e Shaders
+Vertex Buffer é um buffer alocado na GPU (VRAM)
+Shader é um código que irá ser executado na GPU, nele informo como ele precisa ler os Vertex Buffers e desenhar na tela o que eu quero
+OpenGL funciona como uma máquina de estado. Ele irá desenhar a partir do Vertex Buffer e Shader que eu selecionar, não sendo necessário eu falar o que precisa fazer.
+
 <!-- - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
