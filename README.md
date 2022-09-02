@@ -31,7 +31,7 @@
   - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANTE** glewInit() não pode ser invocado antes de criar um contexto válido na aplicação (glfwMakeContextCurrent(window);)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL: http://glew.sourceforge.net/
 
-## 5 - Vertex Buffers e Shaders
+## 5 - Vertex Buffers
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vertex Buffer é um buffer alocado na GPU (VRAM)<br>
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shader é um código que irá ser executado na GPU, nele informo como ele precisa ler os Vertex Buffers e desenhar na tela o que eu quero.<br>
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenGL funciona como uma máquina de estado. Ele irá desenhar a partir do Vertex Buffer e Shader que eu selecionar, não sendo necessário eu falar o que precisa fazer.<br>
@@ -39,6 +39,19 @@
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GL_ARRAY_BUFFER indica que tipo (target) é a estrutura que eu estou utilizando, neste caso é um Buffer genérico para armazenar Vertex
   - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vertex Attributes -> glVertexAttribPointer() Função utilizada para definir atributos dos vertices, só pode ser chamada após a glBindBuffer(). Vou chamar ela toda vez que for definir um atributo.
   - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANTE** É necessário habilitar a função glVertexAttribPointer(), para fazer isso é necessário acionar a função glEnableVertexAttribArray() (Funciona como máquina de estado, não precisa ser necessariamente antes)
+
+## 6 - Shaders
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Blocos de código para serem executados na GPU<br>
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vertex Shaders e Fragment (Pixel) Shaders -> Shaders mais focados nos estudos. Existem outros (Ex.: Compute Shaders)<br>
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quando a função DrawCall é chamada, os Vertex Shaders são executados, depois os Fragments Shaders e por fim vemos o resultado na tela. (Forma Simplificada)<br>
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O código presente no Vertex Shader é chamado para todo o Vertex que tivermos nos nossos dados que serão renderizados na tela.<br>
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Os Fragment Shaders são chamados para preencher o que está dentro dos Vertex, informando cor por exemplo, eles serão chamados um número maior de vezes, pois um triângulo de 3 vertices pode ser enorme e ter muita informação dentro.<br>
+  - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANTE** Por este motivo se eu quiser otimizar meus cálculos, pode valer a pena rodar em um Vertex Shader e passar o resultado para o Fragment Shader, pois faço a conta menos vezes.<br>
+  - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANTE** Fragment Shaders são utilizados por pixel, pois eles são utilizados para dizer qual cor o pixel deve ser (Após verificar luz, material, ambiente, etc).
+  - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANTE** Vertex Shaders são utilizados por vertex, pois eles definem a posição na tela do pixel.
+
+## 7 - Escrevendo o Shader
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 docs.gl = Link com uma boa documentação
 
