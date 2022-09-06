@@ -2,6 +2,45 @@
 
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <fstream> // Ler Arquivos
+#include <string> // getline
+#include <sstream> // stringStream
+
+struct ShaderProgramSource {
+    std::string vertexSource;
+    std::string fragmentSource;
+};
+
+static ShaderProgramSource ParseShader(const std::string & filepath) {
+    std::ifstream stream(filepath); // Abre o arquivo
+
+    enum class ShaderType {
+        NONE = -1, VERTEX = 0, FRAGMENT = 1
+    };
+
+    std::string line;
+    std::stringstream ss[2]; // 2 streams, um para vertex e outro para fragment
+    ShaderType type = ShaderType::NONE;
+    while (getline(stream, line)) {
+        // npos = Posicao invalida na string
+        if (line.find("#shader") != std::string::npos) {
+            if (line.find("vertex") != std::string::npos) {
+                type = ShaderType::VERTEX;
+            } else if (line.find("fragment") != std::string::npos) {
+                type = ShaderType::FRAGMENT;
+            }
+        } else {
+            if (type != ShaderType::NONE) {
+                ss[(int)type] << line << '\n';
+            }
+        }
+    }
+    /*ShaderProgramSource shaders;
+    shaders.vertexSource = ss[0].str();
+    shaders.fragmentSource = ss[1].str();
+    return shaders;*/
+    return { ss[0].str(), ss[1].str() };
+}
 
 // Função para compilar os Shaders
 static unsigned int CompileShader(unsigned int type, const std::string &source) {    
@@ -151,6 +190,10 @@ int main(void)
     unsigned int shader = CreateShader(vertexShader, fragmentShader);
     glUseProgram(shader);
 
+    ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
+    unsigned int shaderFile = CreateShader(source.vertexSource, source.fragmentSource);
+    glUseProgram(shaderFile);
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -176,6 +219,7 @@ int main(void)
 
     // Limpo tudo da memória
     glDeleteProgram(shader);
+    glDeleteProgram(shaderFile);
 
     glfwTerminate();
     return 0;
