@@ -112,7 +112,17 @@ int main(void)
     glEnableVertexAttribArray(0); // Como funciona como máquina de estado, eu não preciso necessariamente habilitar antes de glVertexAttribPointer
 
     // Shader
-    std::string vertexShader =
+    std::string vertexShader = R"vertexShader(
+        #version 330 core
+
+        layout(location = 0) in vec4 position;
+
+        void main()
+        {
+            gl_Position = position;
+        }
+    )vertexShader";
+    /*std::string vertexShader =
         // https://en.wikipedia.org/wiki/OpenGL_Shading_Language
         // https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)
         "#version 330 core\n"
@@ -126,7 +136,7 @@ int main(void)
             // Vai pegar ambos x e y que tenho definido e fazer o cast para vec4
         "   gl_Position = position;\n"
         "}\n"
-        ;
+        ;*/
     std::string fragmentShader = 
         "#version 330 core\n"
         "\n"
