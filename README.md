@@ -52,7 +52,7 @@
 
 ## 7 - Escrevendo o Shader
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;É possível escrever o Shader direto no código (Pouco recomendado), em C++ tem as RAW Strings, utilizando R"nome(CODIGO)nome";
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```
+```
 std::string vertexShader = R"vertexShader(
         #version 330 core
 
