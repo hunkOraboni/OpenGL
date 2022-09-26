@@ -126,10 +126,18 @@ int main(void)
     // Retornar versão do OpenGL
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-    float triangle_position[6] = {
-        -0.5f, -0.5f,
-         0.0f, 0.5f,
-         0.5f, -0.5f
+    float triangle_position[] = {
+        -0.5f, -0.5f, // 0
+         0.5f, -0.5f, // 1
+         0.5f,  0.5f, // 2
+        -0.5f,  0.5f  // 3
+    };
+
+    // Para desenhar um quadrado, preciso de 2 triangulos, mas os vertices se conectam, para salvar memória, irei utilizar o ponto já definido.
+    // IndexBuffer é simplesmente isso
+    unsigned int indices[] = {
+        0, 1, 2,
+        2, 3, 0
     };
 
     // Quantidade Vertex Buffers que irei criar e onde eu vou armazenar a referencia (ID do buffer gerado)
@@ -138,7 +146,7 @@ int main(void)
     // Para usar o buffer eu preciso passar o tipo final dele e ID dele
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     // Após selecionar, preciso colocar dados dentro do Buffer
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), triangle_position, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), triangle_position, GL_STATIC_DRAW);
     // Definição de atributos (Posicao)
     // 0 é o indice (primeiro atributo)
     // 2 é o tamanho que representa cada vertex no vetor, X e Y
@@ -149,6 +157,14 @@ int main(void)
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     // A função vai utilizar o index 0 para habilitar a leitura do array e o OpenGL saber como interpretar os dados fornecidos
     glEnableVertexAttribArray(0); // Como funciona como máquina de estado, eu não preciso necessariamente habilitar antes de glVertexAttribPointer
+
+    // Utilização de um IndexBuffer
+    unsigned int ibo; // ID do meu IndexBuffer
+    glGenBuffers(1, &ibo);
+    // Uso outro tipo de buffer, o GL_ELEMENT_ARRAY_BUFFER
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    // Após selecionar, preciso colocar dados dentro do Buffer (Sao 6 indices)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
     // Shader
     std::string vertexShader = R"vertexShader(
@@ -208,7 +224,10 @@ int main(void)
         glEnd();*/
 
         // Chamada para desenhar na tela um Array (Meu buffer é deste tipo), nele passo qual será o formato da minha imagem, onde começo a ler os valores e quantos valores são (3 vertices)
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        //glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        // Mode, quantidade de indices, tipo de dado que vou usar, ja fiz o bind do buffer na linha 165, por isso pode ser nullptr
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

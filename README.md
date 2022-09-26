@@ -51,7 +51,25 @@
   - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANTE** Vertex Shaders são utilizados por vertex, pois eles definem a posição na tela do pixel.
 
 ## 7 - Escrevendo o Shader
-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;É possível escrever o Shader direto no código (Pouco recomendado), em C++ tem as RAW Strings, utilizando R"nome(CODIGO)nome";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```
+std::string vertexShader = R"vertexShader(
+        #version 330 core
+
+        layout(location = 0) in vec4 position;
+
+        void main()
+        {
+            gl_Position = position;
+        }
+    )vertexShader";
+```
+
+## 8 - Index Buffer
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Utilizo para salvar memória na criação dos vertices.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Um quadrado são dois triangulos com dois vertices em comum, por isso crio 4 vertices e 1 Index Buffer com 6 posicoes, nele indico como ler as informações.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Substituo o glDrawArrays por glDrawElements.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Todos os Index Buffer precisam ser ```unsigned int```
 
 docs.gl = Link com uma boa documentação
 
