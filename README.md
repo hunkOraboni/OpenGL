@@ -71,6 +71,11 @@ std::string vertexShader = R"vertexShader(
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Substituo o glDrawArrays por glDrawElements.
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Todos os Index Buffer precisam ser ```unsigned int```
 
+## 9 - Dealing with Errors
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A função glGetError() retorna os erros que estão na pilha de erros, porém é necessário chamar ela para cada error (Uma função pode gerar mais de um erro)
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Uma forma de melhorar o código é criar macros (define) para limpar todos erros através de um loop e depois verificar o erro para a minha função específica
+
+
 docs.gl = Link com uma boa documentação
 
 <!-- - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->

@@ -6,6 +6,26 @@
 #include <string> // getline
 #include <sstream> // stringStream
 
+// Função para verificar caso eu tenha algum erro e quebrar o código no momento (linha) que isto ocorrer
+#define ASSERT(x) if (!(x)) __debugbreak();
+// Macro para não ter que executar a limpeza dos erros e validar se tenho algum erro
+// #x = Transforma x em um stream (texto)
+// __FILE__ = Arquivo que gerou o erro
+// __LINE__ = Linha que gerou o erro
+#define GLCall(x) GLClearError(); x; ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+
+static void GLClearError() {
+    while (glGetError() != GL_NO_ERROR);
+}
+
+static bool GLLogCall(const char *function, const char *file, int line) {
+    while (GLenum error = glGetError()) {
+        std::cout << "[OpenGL Error] (" << error << "):" << std::endl << "    " << line << ":" << file << std::endl << "    " << function << std::endl;
+        return false;
+    }
+    return true;
+}
+
 struct ShaderProgramSource {
     std::string vertexSource;
     std::string fragmentSource;
@@ -226,8 +246,14 @@ int main(void)
         // Chamada para desenhar na tela um Array (Meu buffer é deste tipo), nele passo qual será o formato da minha imagem, onde começo a ler os valores e quantos valores são (3 vertices)
         //glDrawArrays(GL_TRIANGLES, 0, 3);
 
+        /*GLClearError();
         // Mode, quantidade de indices, tipo de dado que vou usar, ja fiz o bind do buffer na linha 165, por isso pode ser nullptr
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        ASSERT(GLLogCall());*/
+
+        // Para não ter que ficar limpando log, utilizo essa macro para fazer isso sempre
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr));
+
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
