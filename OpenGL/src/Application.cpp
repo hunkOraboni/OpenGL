@@ -136,6 +136,9 @@ int main(void)
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+    // Ativa o vsync
+    glfwSwapInterval(1);
+
     // Precisa inicializar após a criação do Context
     GLenum resultGlewInit = glewInit();
     if (GLEW_OK != resultGlewInit) { // Verifica se conseguir inicializar o GLEW
@@ -230,6 +233,14 @@ int main(void)
     unsigned int shaderFile = CreateShader(source.vertexSource, source.fragmentSource);
     glUseProgram(shaderFile);
 
+    GLCall(int uniform_location = glGetUniformLocation(shaderFile, "u_Color")); // Se retornar -1 é porque não encontrou o uniform
+    ASSERT(uniform_location != -1);
+    // Eu preciso executar esta função depois de escolher um shader, pois nele estará meu uniform
+    GLCall(glUniform4f(uniform_location, 0.3f, 0.2f, 0.0f, 1.0f));
+
+    float red = 0.0f;
+    float increment = 0.05f;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -251,8 +262,16 @@ int main(void)
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         ASSERT(GLLogCall());*/
 
+        // Alterar a cor vermelha
+        GLCall(glUniform4f(uniform_location, red, 0.2f, 0.0f, 1.0f));
+
+        if ((red > 1.0f) || (red < 0.0f)) {
+            increment *= -1;
+        }
+        red += increment;
+
         // Para não ter que ficar limpando log, utilizo essa macro para fazer isso sempre
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr));
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
 
         /* Swap front and back buffers */

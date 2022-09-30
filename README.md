@@ -75,6 +75,9 @@ std::string vertexShader = R"vertexShader(
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A função glGetError() retorna os erros que estão na pilha de erros, porém é necessário chamar ela para cada error (Uma função pode gerar mais de um erro)
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Uma forma de melhorar o código é criar macros (define) para limpar todos erros através de um loop e depois verificar o erro para a minha função específica
 
+## 10 - Uniforms
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forma de utilizar variáveis entre o shader e minha aplicação, assim poderei passar data em tempo de execução
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ele é executado sempre antes de cada chamada de draw
 
 docs.gl = Link com uma boa documentação
 
