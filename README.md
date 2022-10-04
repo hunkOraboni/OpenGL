@@ -80,5 +80,6 @@ std::string vertexShader = R"vertexShader(
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ele é executado sempre antes de cada chamada de draw
 
 docs.gl = Link com uma boa documentação
+https://www.khronos.org/opengl/
 
 <!-- - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
