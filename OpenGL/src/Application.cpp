@@ -125,6 +125,12 @@ int main(void)
         return -1;
     }
 
+    // Estou falando para usar a versao 3.3 do OpenGL e o Core Profile (Default = Compatibility)
+    // O Core Profile não utiliza um VAO (Vertex Array Object) por padrão, então eu preciso criar um manualmente
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
     if (!window)
@@ -163,13 +169,19 @@ int main(void)
         2, 3, 0
     };
 
+    // Criar VAO
+    // Posso ter mais de um VAO, um para cada objeto que quero renderizar, assim eu não preciso ficar chamando as funções glVertexAttribPointer e tendo que reconfigurar tudo sempre
+    unsigned int vao;
+    GLCall(glGenVertexArrays(1,&vao));
+    GLCall(glBindVertexArray(vao));
+
     // Quantidade Vertex Buffers que irei criar e onde eu vou armazenar a referencia (ID do buffer gerado)
     unsigned int buffer;
-    glGenBuffers(1, &buffer);
+    GLCall(glGenBuffers(1, &buffer));
     // Para usar o buffer eu preciso passar o tipo final dele e ID dele
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
     // Após selecionar, preciso colocar dados dentro do Buffer
-    glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), triangle_position, GL_STATIC_DRAW);
+    GLCall(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), triangle_position, GL_STATIC_DRAW));
     // Definição de atributos (Posicao)
     // 0 é o indice (primeiro atributo)
     // 2 é o tamanho que representa cada vertex no vetor, X e Y
@@ -177,17 +189,18 @@ int main(void)
     // GL_FALSE é se quero normalizar ou não, o float já está normalizado (Valor entre 0 e 1)
     // stride é a quantidade de bytes que temos separando cada vertex (no caso X e Y, cada um 4 bytes, sendo 8 no total)
     // 0 é a posição (ponteiro) onde irá começar a analisar o vetor para poder ler os valores (Já defini em glBufferData qual o vetor)
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
     // A função vai utilizar o index 0 para habilitar a leitura do array e o OpenGL saber como interpretar os dados fornecidos
-    glEnableVertexAttribArray(0); // Como funciona como máquina de estado, eu não preciso necessariamente habilitar antes de glVertexAttribPointer
+    GLCall(glEnableVertexAttribArray(0)); // Como funciona como máquina de estado, eu não preciso necessariamente habilitar antes de glVertexAttribPointer
+    // ** Vertex Array Objects ** -> O indice 0 das funções acima estão relacionadas ao VAO, no Core_Profile eu preciso instanciar um VAO antes para poder utilizar
 
     // Utilização de um IndexBuffer
     unsigned int ibo; // ID do meu IndexBuffer
-    glGenBuffers(1, &ibo);
+    GLCall(glGenBuffers(1, &ibo));
     // Uso outro tipo de buffer, o GL_ELEMENT_ARRAY_BUFFER
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
     // Após selecionar, preciso colocar dados dentro do Buffer (Sao 6 indices)
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
 
     // Shader
     std::string vertexShader = R"vertexShader(
@@ -227,11 +240,11 @@ int main(void)
         "}\n"
         ;
     unsigned int shader = CreateShader(vertexShader, fragmentShader);
-    glUseProgram(shader);
+    GLCall(glUseProgram(shader));
 
     ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
     unsigned int shaderFile = CreateShader(source.vertexSource, source.fragmentSource);
-    glUseProgram(shaderFile);
+    GLCall(glUseProgram(shaderFile));
 
     GLCall(int uniform_location = glGetUniformLocation(shaderFile, "u_Color")); // Se retornar -1 é porque não encontrou o uniform
     ASSERT(uniform_location != -1);
@@ -282,8 +295,8 @@ int main(void)
     }
 
     // Limpo tudo da memória
-    glDeleteProgram(shader);
-    glDeleteProgram(shaderFile);
+    GLCall(glDeleteProgram(shader));
+    GLCall(glDeleteProgram(shaderFile));
 
     glfwTerminate();
     return 0;
