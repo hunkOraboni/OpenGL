@@ -6,25 +6,11 @@
 #include <string> // getline
 #include <sstream> // stringStream
 
-// Função para verificar caso eu tenha algum erro e quebrar o código no momento (linha) que isto ocorrer
-#define ASSERT(x) if (!(x)) __debugbreak();
-// Macro para não ter que executar a limpeza dos erros e validar se tenho algum erro
-// #x = Transforma x em um stream (texto)
-// __FILE__ = Arquivo que gerou o erro
-// __LINE__ = Linha que gerou o erro
-#define GLCall(x) GLClearError(); x; ASSERT(GLLogCall(#x, __FILE__, __LINE__))
-
-static void GLClearError() {
-    while (glGetError() != GL_NO_ERROR);
-}
-
-static bool GLLogCall(const char *function, const char *file, int line) {
-    while (GLenum error = glGetError()) {
-        std::cout << "[OpenGL Error] (" << error << "):" << std::endl << "    " << line << ":" << file << std::endl << "    " << function << std::endl;
-        return false;
-    }
-    return true;
-}
+#include "Renderer.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "VertexArray.h"
+#include "VertexBufferLayout.h"
 
 struct ShaderProgramSource {
     std::string vertexSource;
@@ -171,17 +157,26 @@ int main(void)
 
     // Criar VAO
     // Posso ter mais de um VAO, um para cada objeto que quero renderizar, assim eu não preciso ficar chamando as funções glVertexAttribPointer e tendo que reconfigurar tudo sempre
-    unsigned int vao;
+    /*unsigned int vao;
     GLCall(glGenVertexArrays(1,&vao));
-    GLCall(glBindVertexArray(vao));
+    GLCall(glBindVertexArray(vao));*/
+
+    VertexArray va;
+
+    // Esta função faz o mesmo que as linhas abaixo
+    VertexBuffer vb(triangle_position, 4 * 2 * sizeof(float));
+
+    VertexBufferLayout layout;
+    layout.Push<float>(2);
+    va.AddBuffer(vb, layout);
 
     // Quantidade Vertex Buffers que irei criar e onde eu vou armazenar a referencia (ID do buffer gerado)
-    unsigned int buffer;
+    /*unsigned int buffer;
     GLCall(glGenBuffers(1, &buffer));
     // Para usar o buffer eu preciso passar o tipo final dele e ID dele
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
     // Após selecionar, preciso colocar dados dentro do Buffer
-    GLCall(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), triangle_position, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), triangle_position, GL_STATIC_DRAW));*/
     // Definição de atributos (Posicao)
     // 0 é o indice (primeiro atributo)
     // 2 é o tamanho que representa cada vertex no vetor, X e Y
@@ -189,18 +184,20 @@ int main(void)
     // GL_FALSE é se quero normalizar ou não, o float já está normalizado (Valor entre 0 e 1)
     // stride é a quantidade de bytes que temos separando cada vertex (no caso X e Y, cada um 4 bytes, sendo 8 no total)
     // 0 é a posição (ponteiro) onde irá começar a analisar o vetor para poder ler os valores (Já defini em glBufferData qual o vetor)
-    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
+    //GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
     // A função vai utilizar o index 0 para habilitar a leitura do array e o OpenGL saber como interpretar os dados fornecidos
-    GLCall(glEnableVertexAttribArray(0)); // Como funciona como máquina de estado, eu não preciso necessariamente habilitar antes de glVertexAttribPointer
+    //GLCall(glEnableVertexAttribArray(0)); // Como funciona como máquina de estado, eu não preciso necessariamente habilitar antes de glVertexAttribPointer
     // ** Vertex Array Objects ** -> O indice 0 das funções acima estão relacionadas ao VAO, no Core_Profile eu preciso instanciar um VAO antes para poder utilizar
 
+
+    IndexBuffer ib(indices, 6);
     // Utilização de um IndexBuffer
-    unsigned int ibo; // ID do meu IndexBuffer
+    /*unsigned int ibo; // ID do meu IndexBuffer
     GLCall(glGenBuffers(1, &ibo));
     // Uso outro tipo de buffer, o GL_ELEMENT_ARRAY_BUFFER
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
     // Após selecionar, preciso colocar dados dentro do Buffer (Sao 6 indices)
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));*/
 
     // Shader
     std::string vertexShader = R"vertexShader(
@@ -258,7 +255,7 @@ int main(void)
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
         // OpenGL Legacy
         /*glBegin(GL_TRIANGLES);
@@ -274,7 +271,8 @@ int main(void)
         // Mode, quantidade de indices, tipo de dado que vou usar, ja fiz o bind do buffer na linha 165, por isso pode ser nullptr
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         ASSERT(GLLogCall());*/
-
+        va.Bind();
+        ib.Bind();
         // Alterar a cor vermelha
         GLCall(glUniform4f(uniform_location, red, 0.2f, 0.0f, 1.0f));
 
