@@ -2,22 +2,24 @@
 
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <fstream> // Ler Arquivos
+//#include <fstream> // Ler Arquivos
 #include <string> // getline
 #include <sstream> // stringStream
 
 #include "Renderer.h"
+#include "GLErrorCheck.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "VertexBufferLayout.h"
+#include "Shader.h"
 
-struct ShaderProgramSource {
+/*struct ShaderProgramSource {
     std::string vertexSource;
     std::string fragmentSource;
-};
+};*/
 
-static ShaderProgramSource ParseShader(const std::string & filepath) {
+/*static ShaderProgramSource ParseShader(const std::string & filepath) {
     std::ifstream stream(filepath); // Abre o arquivo
 
     enum class ShaderType {
@@ -41,15 +43,15 @@ static ShaderProgramSource ParseShader(const std::string & filepath) {
             }
         }
     }
-    /*ShaderProgramSource shaders;
-    shaders.vertexSource = ss[0].str();
-    shaders.fragmentSource = ss[1].str();
-    return shaders;*/
+    //ShaderProgramSource shaders;
+    //shaders.vertexSource = ss[0].str();
+    //shaders.fragmentSource = ss[1].str();
+    //return shaders;
     return { ss[0].str(), ss[1].str() };
-}
+}*/
 
 // Função para compilar os Shaders
-static unsigned int CompileShader(unsigned int type, const std::string &source) {    
+/*static unsigned int CompileShader(unsigned int type, const std::string& source) {
     // Crio um Shader do tipo especificado
     unsigned int id = glCreateShader(type);
     // Pego o código do meu shader (Posso puxar um arquivo, internet, etc...) e pego o endereco da primeira posicao
@@ -78,10 +80,10 @@ static unsigned int CompileShader(unsigned int type, const std::string &source) 
         return 0;
     }
     return id;
-}
+}*/
 
 // Função para receber o texto dos Shaders, então utilizar o OpenGL para compilar e utilizar
-static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader) {
+/*static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader) {
     unsigned int program = glCreateProgram();
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
@@ -99,7 +101,7 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
     glDeleteShader(fs);
 
     return program;
-}
+}*/
 
 int main(void)
 {
@@ -236,17 +238,28 @@ int main(void)
         "   color = vec4(1.0, 0.0, 0.0, 1.0);\n"
         "}\n"
         ;
-    unsigned int shader = CreateShader(vertexShader, fragmentShader);
-    GLCall(glUseProgram(shader));
+    //unsigned int shader = CreateShader(vertexShader, fragmentShader);
+    //GLCall(glUseProgram(shader));
 
-    ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
-    unsigned int shaderFile = CreateShader(source.vertexSource, source.fragmentSource);
-    GLCall(glUseProgram(shaderFile));
+    Shader shader("res/shaders/Basic.shader");
+    shader.Bind();
+    /*ShaderProgramSource source = Shader::ParseShader("res/shaders/Basic.shader");
+    unsigned int shaderFile = Shader::CreateShader(source.vertexSource, source.fragmentSource);*/
+    //GLCall(glUseProgram(shader));
 
-    GLCall(int uniform_location = glGetUniformLocation(shaderFile, "u_Color")); // Se retornar -1 é porque não encontrou o uniform
-    ASSERT(uniform_location != -1);
+    shader.SetUniform4f("u_Color", 0.3f, 0.2f, 0.0f, 1.0f);
+    //GLCall(int uniform_location = glGetUniformLocation(shaderFile, "u_Color")); // Se retornar -1 é porque não encontrou o uniform
+    //ASSERT(uniform_location != -1);
     // Eu preciso executar esta função depois de escolher um shader, pois nele estará meu uniform
-    GLCall(glUniform4f(uniform_location, 0.3f, 0.2f, 0.0f, 1.0f));
+    //GLCall(glUniform4f(uniform_location, 0.3f, 0.2f, 0.0f, 1.0f));
+
+    va.Unbind();
+    shader.Unbind();
+    vb.Unbind();
+    ib.Unbind();
+    //GLCall(glUseProgram(0));
+
+    Renderer renderer;
 
     float red = 0.0f;
     float increment = 0.05f;
@@ -255,7 +268,8 @@ int main(void)
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
-        GLCall(glClear(GL_COLOR_BUFFER_BIT));
+        //GLCall(glClear(GL_COLOR_BUFFER_BIT));
+        renderer.Clear();
 
         // OpenGL Legacy
         /*glBegin(GL_TRIANGLES);
@@ -271,18 +285,22 @@ int main(void)
         // Mode, quantidade de indices, tipo de dado que vou usar, ja fiz o bind do buffer na linha 165, por isso pode ser nullptr
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         ASSERT(GLLogCall());*/
-        va.Bind();
-        ib.Bind();
+        //va.Bind();
+        //ib.Bind();
+        shader.Bind();
         // Alterar a cor vermelha
-        GLCall(glUniform4f(uniform_location, red, 0.2f, 0.0f, 1.0f));
+        //GLCall(glUniform4f(uniform_location, red, 0.2f, 0.0f, 1.0f));
+        shader.SetUniform4f("u_Color", red, 0.2f, 0.0f, 1.0f);
 
         if ((red > 1.0f) || (red < 0.0f)) {
             increment *= -1;
         }
         red += increment;
 
+        renderer.Draw(va, ib, shader);
+
         // Para não ter que ficar limpando log, utilizo essa macro para fazer isso sempre
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+        //GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
 
         /* Swap front and back buffers */
@@ -293,8 +311,8 @@ int main(void)
     }
 
     // Limpo tudo da memória
-    GLCall(glDeleteProgram(shader));
-    GLCall(glDeleteProgram(shaderFile));
+    //GLCall(glDeleteProgram(shader));
+    //GLCall(glDeleteProgram(shaderFile));
 
     glfwTerminate();
     return 0;

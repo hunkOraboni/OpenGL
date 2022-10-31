@@ -79,6 +79,13 @@ std::string vertexShader = R"vertexShader(
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forma de utilizar variáveis entre o shader e minha aplicação, assim poderei passar data em tempo de execução
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ele é executado sempre antes de cada chamada de draw
 
+## 11 - Vertex Arrays
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sempre vou ter pelo menos um.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;É uma forma de agrupar diferentes buffer em um único objeto
+
+## 12 - Abastração e Renderer
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Aqui separei todos os objetos em classes, para não ter que sempre ficar criando
+
 docs.gl = Link com uma boa documentação<br>
 https://www.khronos.org/opengl/
 
