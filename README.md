@@ -86,7 +86,17 @@ std::string vertexShader = R"vertexShader(
 ## 12 - Abastração e Renderer
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Aqui separei todos os objetos em classes, para não ter que sempre ficar criando
 
+## 13 - Textures
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Utilizar o stb para carregar a imagem png no programa como um vetor de dados do RGB.
+
+## 14 - Textures Coordinates
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O fragment Shader vai pegar a cor e rasterizar, o que preciso fazer é falar para ele selecionar a coordenada na minha textura para aplicar a cor.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O fragment Shader é executado por cada pixel, entao ele interpola as coordenadas vinda dos Vertex para pegar a posicao certa da textura
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A imagem carrega, porém é necessário criar as funções de blending e transparency para melhor qualidade.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```Blending is the stage of OpenGL rendering pipeline that takes the fragment color outputs from the Fragment Shader and combines them with the colors in the color buffers that these outputs map to. Blending parameters can allow the source and destination colors for each output to be combined in various ways.```
+
 docs.gl = Link com uma boa documentação<br>
 https://www.khronos.org/opengl/
+https://github.com/nothings/stb/blob/master/stb_image.h
 
 <!-- - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
