@@ -6,9 +6,11 @@ layout(location = 1) in vec2 texCoord; // Estou definindo que no meu layout, na 
 
 out vec2 v_TexCoord;// Vou mandar os dados do VertexShader para o FragmentShader
 
+uniform mat4 u_MVP; // Irá receber a matriz que irá realizar o calculo para colocar minha imagem em 4:3
+
 void main()
 {
-    gl_Position = position;
+    gl_Position = position * u_MVP;
     v_TexCoord = texCoord;
 }
 

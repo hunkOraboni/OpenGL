@@ -15,6 +15,9 @@
 #include "Shader.h"
 #include "Texture.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 /*struct ShaderProgramSource {
 	std::string vertexSource;
 	std::string fragmentSource;
@@ -249,6 +252,11 @@ int main(void)
 		//unsigned int shader = CreateShader(vertexShader, fragmentShader);
 		//GLCall(glUseProgram(shader));
 
+		// Maths
+		// glm::mat4 = Matriz 4x4
+		glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+		//glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -0.75f, 0.75f, -1.0f, 1.0f);
+
 		Shader shader("res/shaders/Basic.shader");
 		shader.Bind();
 		/*ShaderProgramSource source = Shader::ParseShader("res/shaders/Basic.shader");
@@ -264,6 +272,7 @@ int main(void)
 		Texture texture("res/textures/sonarqube_logo.png");
 		texture.Bind();
 		shader.SetUniform1i("u_Texture", 0); // o 0 é do Slot da texture passado em Bind
+		shader.SetUniformMat4f("u_MVP", proj);
 
 		va.Unbind();
 		shader.Unbind();

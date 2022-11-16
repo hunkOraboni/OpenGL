@@ -6,6 +6,7 @@
 #include <unordered_map> //Hash Map
 
 #include "GLErrorCheck.h"
+#include "glm/glm.hpp"
 
 struct ShaderProgramSource {
 	std::string vertexSource;
@@ -27,6 +28,7 @@ public:
 	// Set Uniforms
 	void SetUniform1i(const std::string& name, int value);
 	void SetUniform4f(const std::string &name, float v0, float v1, float v2, float v3);
+	void SetUniformMat4f(const std::string& name, glm::mat4& matrix);
 private:
 	int GetUniformLocation(const std::string &name);
 	unsigned int CompileShader(unsigned int type, const std::string& source);

@@ -102,6 +102,13 @@ Blending parameters can allow the source and destination
 colors for each output to be combined in various ways.
 ```
 
+## 15 - Blending
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quando quero mostrar elementos semi ou completamente transparentes
+
+## 16 - Maths
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/g-truc/glm
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adicionado a pasta src/vendor nas propriedades -> Incluir diretorio
+
 docs.gl = Link com uma boa documentação<br>
 https://www.khronos.org/opengl/
 https://github.com/nothings/stb/blob/master/stb_image.h
