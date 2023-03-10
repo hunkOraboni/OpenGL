@@ -108,6 +108,17 @@ colors for each output to be combined in various ways.
 ## 16 - Maths
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/g-truc/glm
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adicionado a pasta src/vendor nas propriedades -> Incluir diretorio
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consigo fazer projeções ortográficas agora por exemplo glm::ortho
+
+## 17 - Projection
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Como fazer a projeção de um mundo 3D em uma tela 2D
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVP = Model/View/Projection Matrix => Todas essas matrizes sao multiplicadas para ter a posicao final do meu vertice
+  - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenGL é multiplicado por orientacao em coluna, então multiplica PVM
+  - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Direct3D é multiplicado por orientação em linha, então multiplica MVP
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Projection Matrix => Responsável por transformar qualquer espaço que estamos utilizando em uma visão normalizada (-1 < x < 1)
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View Matrix => Uma forma de simular a câmera, a posição que será visível. Transform (Position, Rotation, Scale da câmera)
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Model Matrix => Uma forma de simular o modelo que estamos desenhando. Transform (Position, Rotation, Scale do modelo)
+  - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANTE**A Multiplicação das matrizes deve ser Projection * View * Model * Position (Ordem importa)
 
 docs.gl = Link com uma boa documentação<br>
 https://www.khronos.org/opengl/

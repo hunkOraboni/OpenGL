@@ -124,7 +124,8 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	//window = glfwCreateWindow(1366, 768, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(960, 540, "Hello World", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -147,12 +148,20 @@ int main(void)
 	// Retornar versão do OpenGL
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	{
-		float triangle_position[] = {
+		/*float triangle_position[] = {
 			// x, y, texture coordinate x e y
 			-0.5f, -0.5f, 0.0f, 0.0f, // 0
 			 0.5f, -0.5f, 1.0f, 0.0f, // 1
 			 0.5f,  0.5f, 1.0f, 1.0f, // 2
 			-0.5f,  0.5f, 0.0f, 1.0f  // 3
+		};*/
+
+		float triangle_position[] = {
+			// x, y, texture coordinate x e y
+			100.0f, 100.0f, 0.0f, 0.0f, // 0
+			450.0f, 100.0f, 1.0f, 0.0f, // 1
+			450.0f, 200.0f, 1.0f, 1.0f, // 2
+			100.0f, 200.0f, 0.0f, 1.0f  // 3
 		};
 
 		// Para desenhar um quadrado, preciso de 2 triangulos, mas os vertices se conectam, para salvar memória, irei utilizar o ponto já definido.
@@ -254,8 +263,25 @@ int main(void)
 
 		// Maths
 		// glm::mat4 = Matriz 4x4
-		glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+		//glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+		// Defino os limites da minha projeçao ortográfica
+		// Projection Matrix => Normalização de 3D para 2D
+		//glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+		glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
 		//glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -0.75f, 0.75f, -1.0f, 1.0f);
+
+		// View Matrix => Posição da camera
+		// Irei mover a camera para a esquerda, isso faz com que os objetos na tela apareçam mais a direita
+		glm::mat4 view(1.0f);
+		view = glm::translate(view, glm::vec3(-100, 0, 0)); // Movi a câmera para a direita (Negativo)
+		//glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+
+		// Model Matrix => Posição
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
+		
+		// Isto cria a transformation para posicionar meu objeto
+		glm::mat4 mvp = proj * view * model;
+		//glm::mat4 mvp = proj;
 
 		Shader shader("res/shaders/Basic.shader");
 		shader.Bind();
@@ -272,7 +298,9 @@ int main(void)
 		Texture texture("res/textures/sonarqube_logo.png");
 		texture.Bind();
 		shader.SetUniform1i("u_Texture", 0); // o 0 é do Slot da texture passado em Bind
-		shader.SetUniformMat4f("u_MVP", proj);
+		//shader.SetUniformMat4f("u_MVP", proj);
+		// Passo todo meu MVP para ter todas as matrizes multiplicadas
+		shader.SetUniformMat4f("u_MVP", mvp);
 
 		va.Unbind();
 		shader.Unbind();
