@@ -123,6 +123,13 @@ colors for each output to be combined in various ways.
 ## 18 - IMGui
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/ocornut/imgui/releases/tag/v1.89.3
 
+## 19 - Multiple Objects - Shader, VertexArray, IndexBuffer
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shader => Programa que diz o que fazer na tela, como desenhar.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VertexArray => Os dados que vamos realmente tratar para mostrar na tela.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IndexBuffer => Contém os itens que vamos selecionar para desenhar
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Para tratar um segundo objeto igual, posso criar uma nova matriz de posiçao ou alterar a matriz MVP
+   - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alterar a matriz MVP exige que eu chame uma draw call para cada objeto
+
 docs.gl = Link com uma boa documentação<br>
 https://www.khronos.org/opengl/
 https://github.com/nothings/stb/blob/master/stb_image.h
