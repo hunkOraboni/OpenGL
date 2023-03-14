@@ -18,6 +18,10 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "vendor/imgui/imgui.h"
+#include "vendor/imgui/imgui_impl_opengl3.h"
+#include "vendor/imgui/imgui_impl_glfw.h"
+
 /*struct ShaderProgramSource {
 	std::string vertexSource;
 	std::string fragmentSource;
@@ -158,10 +162,10 @@ int main(void)
 
 		float triangle_position[] = {
 			// x, y, texture coordinate x e y
-			100.0f, 100.0f, 0.0f, 0.0f, // 0
-			450.0f, 100.0f, 1.0f, 0.0f, // 1
-			450.0f, 200.0f, 1.0f, 1.0f, // 2
-			100.0f, 200.0f, 0.0f, 1.0f  // 3
+			-200.0f, -100.0f, 0.0f, 0.0f, // 0
+			 200.0f, -100.0f, 1.0f, 0.0f, // 1
+			 200.0f,  100.0f, 1.0f, 1.0f, // 2
+			-200.0f,  100.0f, 0.0f, 1.0f  // 3
 		};
 
 		// Para desenhar um quadrado, preciso de 2 triangulos, mas os vertices se conectam, para salvar memória, irei utilizar o ponto já definido.
@@ -273,14 +277,14 @@ int main(void)
 		// View Matrix => Posição da camera
 		// Irei mover a camera para a esquerda, isso faz com que os objetos na tela apareçam mais a direita
 		glm::mat4 view(1.0f);
-		view = glm::translate(view, glm::vec3(-100, 0, 0)); // Movi a câmera para a direita (Negativo)
+		view = glm::translate(view, glm::vec3(0, 0, 0)); // Movi a câmera para a direita (Negativo)
 		//glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
 
 		// Model Matrix => Posição
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
+		//glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
 		
 		// Isto cria a transformation para posicionar meu objeto
-		glm::mat4 mvp = proj * view * model;
+		//glm::mat4 mvp = proj * view * model;
 		//glm::mat4 mvp = proj;
 
 		Shader shader("res/shaders/Basic.shader");
@@ -300,7 +304,7 @@ int main(void)
 		shader.SetUniform1i("u_Texture", 0); // o 0 é do Slot da texture passado em Bind
 		//shader.SetUniformMat4f("u_MVP", proj);
 		// Passo todo meu MVP para ter todas as matrizes multiplicadas
-		shader.SetUniformMat4f("u_MVP", mvp);
+		//shader.SetUniformMat4f("u_MVP", mvp);
 
 		va.Unbind();
 		shader.Unbind();
@@ -310,6 +314,20 @@ int main(void)
 
 		Renderer renderer;
 
+		// Inclusão do ImGUI
+		ImGui::CreateContext();
+		//ImGuiIO& io = ImGui::GetIO(); (void)io;
+		ImGui_ImplGlfw_InitForOpenGL(window, true);
+		ImGui_ImplOpenGL3_Init((char *) glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
+		//ImGui_ImplOpenGL3_Init();
+		ImGui::StyleColorsDark();
+
+		/*bool show_demo_window = true;
+		bool show_another_window = false;
+		ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);*/
+
+		glm::vec3 translationA(200, 200, 0);
+		glm::vec3 translationB(200, 400, 0);
 		float red = 0.0f;
 		float increment = 0.05f;
 		/* Loop until the user closes the window */
@@ -318,6 +336,19 @@ int main(void)
 			/* Render here */
 			//GLCall(glClear(GL_COLOR_BUFFER_BIT));
 			renderer.Clear();
+
+			ImGui_ImplGlfw_NewFrame();
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui::NewFrame();
+
+			{
+				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
+				//glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
+				//glm::mat4 mvp = proj * view * model;
+				glm::mat4 mvp = proj * view * model;
+
+				shader.SetUniformMat4f("u_MVP", mvp);
+			}
 
 			// OpenGL Legacy
 			/*glBegin(GL_TRIANGLES);
@@ -340,15 +371,51 @@ int main(void)
 			//GLCall(glUniform4f(uniform_location, red, 0.2f, 0.0f, 1.0f));
 			//shader.SetUniform4f("u_Color", red, 0.2f, 0.0f, 1.0f);
 
-			if ((red > 1.0f) || (red < 0.0f)) {
+			/*if ((red > 1.0f) || (red < 0.0f)) {
 				increment *= -1;
 			}
-			red += increment;
+			red += increment;*/
 
+			renderer.Draw(va, ib, shader);
+
+			// Desenhando um segundo objeto
+			{
+				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
+				glm::mat4 mvp = proj * view * model;
+				shader.SetUniformMat4f("u_MVP", mvp);
+			}
 			renderer.Draw(va, ib, shader);
 
 			// Para não ter que ficar limpando log, utilizo essa macro para fazer isso sempre
 			//GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+
+			// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+			// Our state
+			{
+				//static float f = 0.0f;
+				//static int counter = 0;
+
+				//ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+				//ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+				//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+				//ImGui::Checkbox("Another Window", &show_another_window);
+
+				ImGui::SliderFloat3("Translation A", &translationA.x, 0.0f, 960.0f);            // Edit 1 float using a slider from 0.0f to 960.0f
+				ImGui::SliderFloat3("Translation B", &translationB.x, 0.0f, 960.0f);
+				//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+				//if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+					//counter++;
+				//ImGui::SameLine();
+				//ImGui::Text("counter = %d", counter);
+
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+				//ImGui::End();
+			}
+
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 
 			/* Swap front and back buffers */
@@ -361,6 +428,9 @@ int main(void)
 	// Limpo tudo da memória
 	//GLCall(glDeleteProgram(shader));
 	//GLCall(glDeleteProgram(shaderFile));
+
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 
 	glfwTerminate();
 	return 0;

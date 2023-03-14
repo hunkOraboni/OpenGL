@@ -40,6 +40,7 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
         //char message[length];
         // alloca -> Faz alocação de memória na stack
         char* message = (char*)(alloca(sizeof(char) * length));
+        //char* message = (char*)(_malloca(sizeof(char) * length));
         glGetShaderInfoLog(id, length, &length, message);
         std::cout << "Falha na Compilacao do Shader" << std::endl;
         std::cout << message << std::endl;
