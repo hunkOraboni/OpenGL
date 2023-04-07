@@ -14,7 +14,8 @@
 #include "VertexBufferLayout.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "tests/TestClearColor.h"
+//#include "tests/TestClearColor.h"
+#include "tests/TestFramework.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -324,11 +325,11 @@ int main(void)
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init((char*)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
 
-		test::TestClearColor testClearColor;
-
 		test::Test* currentTest = nullptr;
-		test::TestMenu* menu = new test::TestMenu(currentTest);
-		currentTest = menu;
+		test::TestMenu* testMenu = new test::TestMenu(currentTest);
+		currentTest = testMenu;
+
+		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 
 		/*bool show_demo_window = true;
 		bool show_another_window = false;
@@ -344,14 +345,25 @@ int main(void)
 			/* Render here */
 			//GLCall(glClear(GL_COLOR_BUFFER_BIT));
 			renderer.Clear();
-			testClearColor.OnUpdate(0.0f);
-			testClearColor.OnRender();
-
+			GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+			
 			ImGui_ImplGlfw_NewFrame();
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui::NewFrame();
 
-			testClearColor.OnImGUIRender();
+			if (currentTest) {
+				currentTest->OnUpdate(0.0f);
+				currentTest->OnRender();
+				ImGui::Begin("Teste");
+				if (currentTest != testMenu && ImGui::Button("<-")) {
+					// Botao de voltar para o menu, só entro no if se clicar no botão de voltar
+					delete currentTest;
+					currentTest = testMenu;
+				}
+				currentTest->OnImGUIRender();
+				ImGui::End();
+			}
+
 
 			// OpenGL Legacy
 			/*glBegin(GL_TRIANGLES);
@@ -435,7 +447,12 @@ int main(void)
 			/* Poll for and process events */
 			glfwPollEvents();
 		}
+		delete currentTest;
+		if (currentTest != testMenu) {
+			delete testMenu;
+		}
 	}
+
 	// Limpo tudo da memória
 	//GLCall(glDeleteProgram(shader));
 	//GLCall(glDeleteProgram(shaderFile));

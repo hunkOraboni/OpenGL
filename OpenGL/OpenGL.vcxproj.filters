@@ -1393,6 +1393,9 @@
     <ClInclude Include="src\tests\TestClearColor.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\TestFramework.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sonarqube_logo.png">

@@ -24,6 +24,13 @@ namespace test {
 		~TestMenu();
 
 		void OnImGUIRender() override;
+
+		template<typename T>
+		void RegisterTest(const std::string& name) {
+			m_Tests.push_back(std::make_pair(name, []() {return new T(); }));
+			std::cout << "Registering test " << name << std::endl;
+			// []() -> Criação de um lambda
+		}
 	private:
 		Test*& m_CurrentTest;
 		std::vector < std::pair<std::string, std::function<Test* ()>>> m_Tests;
