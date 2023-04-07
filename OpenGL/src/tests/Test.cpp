@@ -1,9 +1,11 @@
 #include "Test.h"
-#include "imgui/imgui.h"
 
 namespace test {
 	TestMenu::TestMenu(Test*& currentTestPointer)
 		: m_CurrentTest(currentTestPointer)
+	{
+	}
+	TestMenu::~TestMenu()
 	{
 	}
 	void TestMenu::OnImGUIRender()

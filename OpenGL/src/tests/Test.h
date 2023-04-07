@@ -21,10 +21,8 @@ namespace test {
 	class TestMenu : public Test {
 	public:
 		TestMenu(Test*& currentTestPointer);
-		//~TestMenu();
+		~TestMenu();
 
-		//void OnUpdate(float deltaTime) override;
-		//void OnRender() override;
 		void OnImGUIRender() override;
 	private:
 		Test*& m_CurrentTest;
