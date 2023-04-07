@@ -129,6 +129,10 @@ colors for each output to be combined in various ways.
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IndexBuffer => Contém os itens que vamos selecionar para desenhar
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Para tratar um segundo objeto igual, posso criar uma nova matriz de posiçao ou alterar a matriz MVP
    - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alterar a matriz MVP exige que eu chame uma draw call para cada objeto
+   - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Estava tendo o erro onde o MVP do primeiro objeto dava erro, isto porque eu estava fazendo shader.Unbind() e setando para depois dar o Bind()
+
+## 20 - Criação de Testes
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remoção dos códigos da main e colocando em funções de teste para testar funcionalidades específicas
 
 docs.gl = Link com uma boa documentação<br>
 https://www.khronos.org/opengl/
