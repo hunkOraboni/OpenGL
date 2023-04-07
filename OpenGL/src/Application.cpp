@@ -14,6 +14,7 @@
 #include "VertexBufferLayout.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "tests/TestClearColor.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -160,7 +161,7 @@ int main(void)
 			-0.5f,  0.5f, 0.0f, 1.0f  // 3
 		};*/
 
-		float triangle_position[] = {
+		/*float triangle_position[] = {
 			// x, y, texture coordinate x e y
 			-200.0f, -100.0f, 0.0f, 0.0f, // 0
 			 200.0f, -100.0f, 1.0f, 0.0f, // 1
@@ -174,7 +175,7 @@ int main(void)
 			0, 1, 2,
 			2, 3, 0
 		};
-
+		*/
 		GLCall(glEnable(GL_BLEND));
 		// Irá pegar SRC_ALPHA vindo do Fragment Shader e vai fazer (1 - ele), para ter a real cor do fragmento // Utilizado para exibir pixels transparentes
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)); // Como OpenGL irá fazer o blend de Alpha Pixels
@@ -185,7 +186,7 @@ int main(void)
 		GLCall(glGenVertexArrays(1,&vao));
 		GLCall(glBindVertexArray(vao));*/
 
-		VertexArray va;
+		/*VertexArray va;
 
 		// Esta função faz o mesmo que as linhas abaixo
 		//VertexBuffer vb(triangle_position, 4 * 2 * sizeof(float)); // Somente X e Y do retangulo
@@ -216,7 +217,7 @@ int main(void)
 		// ** Vertex Array Objects ** -> O indice 0 das funções acima estão relacionadas ao VAO, no Core_Profile eu preciso instanciar um VAO antes para poder utilizar
 
 
-		IndexBuffer ib(indices, 6);
+		//IndexBuffer ib(indices, 6);
 		// Utilização de um IndexBuffer
 		/*unsigned int ibo; // ID do meu IndexBuffer
 		GLCall(glGenBuffers(1, &ibo));
@@ -225,7 +226,7 @@ int main(void)
 		// Após selecionar, preciso colocar dados dentro do Buffer (Sao 6 indices)
 		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));*/
 
-		// Shader
+		/*// Shader
 		std::string vertexShader = R"vertexShader(
         #version 330 core
 
@@ -251,7 +252,7 @@ int main(void)
 			"   gl_Position = position;\n"
 			"}\n"
 			;*/
-		std::string fragmentShader =
+		/*std::string fragmentShader =
 			"#version 330 core\n"
 			"\n"
 			"layout(location = 0) out vec4 color;\n"
@@ -290,8 +291,8 @@ int main(void)
 		Shader shader("res/shaders/Basic.shader");
 		shader.Bind();
 		/*ShaderProgramSource source = Shader::ParseShader("res/shaders/Basic.shader");
-		unsigned int shaderFile = Shader::CreateShader(source.vertexSource, source.fragmentSource);*/
-		//GLCall(glUseProgram(shader));
+		unsigned int shaderFile = Shader::CreateShader(source.vertexSource, source.fragmentSource);
+		GLCall(glUseProgram(shader));*/
 
 		//shader.SetUniform4f("u_Color", 0.3f, 0.2f, 0.0f, 1.0f);
 		//GLCall(int uniform_location = glGetUniformLocation(shaderFile, "u_Color")); // Se retornar -1 é porque não encontrou o uniform
@@ -299,7 +300,7 @@ int main(void)
 		// Eu preciso executar esta função depois de escolher um shader, pois nele estará meu uniform
 		//GLCall(glUniform4f(uniform_location, 0.3f, 0.2f, 0.0f, 1.0f));
 
-		Texture texture("res/textures/sonarqube_logo.png");
+		/*Texture texture("res/textures/sonarqube_logo.png");
 		texture.Bind();
 		shader.SetUniform1i("u_Texture", 0); // o 0 é do Slot da texture passado em Bind
 		//shader.SetUniformMat4f("u_MVP", proj);
@@ -310,45 +311,47 @@ int main(void)
 		shader.Unbind();
 		vb.Unbind();
 		ib.Unbind();
-		//GLCall(glUseProgram(0));
+		//GLCall(glUseProgram(0));*/
 
 		Renderer renderer;
 
 		// Inclusão do ImGUI
 		ImGui::CreateContext();
+		
+		ImGui::StyleColorsDark();
+
 		//ImGuiIO& io = ImGui::GetIO(); (void)io;
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL3_Init((char *) glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
-		//ImGui_ImplOpenGL3_Init();
-		ImGui::StyleColorsDark();
+		ImGui_ImplOpenGL3_Init((char*)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
+
+		test::TestClearColor testClearColor;
+
+		test::Test* currentTest = nullptr;
+		test::TestMenu* menu = new test::TestMenu(currentTest);
+		currentTest = menu;
 
 		/*bool show_demo_window = true;
 		bool show_another_window = false;
 		ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);*/
 
-		glm::vec3 translationA(200, 200, 0);
+		/*glm::vec3 translationA(200, 200, 0);
 		glm::vec3 translationB(200, 400, 0);
 		float red = 0.0f;
-		float increment = 0.05f;
+		float increment = 0.05f;*/
 		/* Loop until the user closes the window */
 		while (!glfwWindowShouldClose(window))
 		{
 			/* Render here */
 			//GLCall(glClear(GL_COLOR_BUFFER_BIT));
 			renderer.Clear();
+			testClearColor.OnUpdate(0.0f);
+			testClearColor.OnRender();
 
 			ImGui_ImplGlfw_NewFrame();
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui::NewFrame();
 
-			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
-				//glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
-				//glm::mat4 mvp = proj * view * model;
-				glm::mat4 mvp = proj * view * model;
-
-				shader.SetUniformMat4f("u_MVP", mvp);
-			}
+			testClearColor.OnImGUIRender();
 
 			// OpenGL Legacy
 			/*glBegin(GL_TRIANGLES);
@@ -366,7 +369,7 @@ int main(void)
 			ASSERT(GLLogCall());*/
 			//va.Bind();
 			//ib.Bind();
-			shader.Bind();
+			//shader.Bind();
 			// Alterar a cor vermelha
 			//GLCall(glUniform4f(uniform_location, red, 0.2f, 0.0f, 1.0f));
 			//shader.SetUniform4f("u_Color", red, 0.2f, 0.0f, 1.0f);
@@ -375,9 +378,18 @@ int main(void)
 				increment *= -1;
 			}
 			red += increment;*/
+			/*
+			{
+				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
+				//glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
+				//glm::mat4 mvp = proj * view * model;
+				glm::mat4 mvp = proj * view * model;
+
+				shader.SetUniformMat4f("u_MVP", mvp);
+			}
 
 			renderer.Draw(va, ib, shader);
-
+			
 			// Desenhando um segundo objeto
 			{
 				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
@@ -385,7 +397,6 @@ int main(void)
 				shader.SetUniformMat4f("u_MVP", mvp);
 			}
 			renderer.Draw(va, ib, shader);
-
 			// Para não ter que ficar limpando log, utilizo essa macro para fazer isso sempre
 			//GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
@@ -413,7 +424,7 @@ int main(void)
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 				//ImGui::End();
 			}
-
+			*/
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
