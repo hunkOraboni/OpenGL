@@ -64,6 +64,25 @@ unsigned int Shader::CreateShader(const std::string& vertexShader, const std::st
     glLinkProgram(program);
     glValidateProgram(program);
 
+    int result;
+    glGetProgramiv(program, GL_LINK_STATUS, &result);
+    if (result == GL_FALSE) {
+        // Caso tenha dado erro
+        int length;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+        std::cout << "Length: " << length << std::endl;
+        // Erro para declarar na stack pois length é uma variável que pode ter qualquer tamanho
+        //char message[length];
+        // alloca -> Faz alocação de memória na stack
+        char* message = (char*)(alloca(sizeof(char) * length));
+        //char* message = (char*)(_malloca(sizeof(char) * length));
+        glGetProgramInfoLog(program, length, &length, message);
+        std::cout << "Falha no Link do Shader" << std::endl;
+        std::cout << message << std::endl;
+        glDeleteProgram(program);
+        return 0;
+    }
+
     // Após eu já usar os Shaders no meu programa eu posso excluí-los (Eles servem como arquivo temporário
     glDeleteShader(vs);
     glDeleteShader(fs);

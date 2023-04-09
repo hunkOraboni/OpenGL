@@ -34,6 +34,7 @@ namespace test {
 		m_Shader->Bind();
 		
 		m_Texture = std::make_unique<Texture>("res/textures/sonarqube_logo.png");
+		m_Texture->Bind();
 		m_Shader->SetUniform1i("u_Texture", 0); // o 0 é do Slot da texture passado em Bind
 		
 		m_VAO->Unbind();
@@ -57,6 +58,9 @@ namespace test {
 		
 		m_Shader->Bind();
 		m_Texture->Bind();
+		m_VAO->Bind();
+		m_VertexBuffer->Bind();
+		m_IndexBuffer->Bind();
 		
 		Renderer renderer;
 		{
