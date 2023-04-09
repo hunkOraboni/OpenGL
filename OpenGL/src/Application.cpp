@@ -154,165 +154,6 @@ int main(void)
 	// Retornar versão do OpenGL
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	{
-		/*float triangle_position[] = {
-			// x, y, texture coordinate x e y
-			-0.5f, -0.5f, 0.0f, 0.0f, // 0
-			 0.5f, -0.5f, 1.0f, 0.0f, // 1
-			 0.5f,  0.5f, 1.0f, 1.0f, // 2
-			-0.5f,  0.5f, 0.0f, 1.0f  // 3
-		};*/
-
-		/*float triangle_position[] = {
-			// x, y, texture coordinate x e y
-			-200.0f, -100.0f, 0.0f, 0.0f, // 0
-			 200.0f, -100.0f, 1.0f, 0.0f, // 1
-			 200.0f,  100.0f, 1.0f, 1.0f, // 2
-			-200.0f,  100.0f, 0.0f, 1.0f  // 3
-		};
-
-		// Para desenhar um quadrado, preciso de 2 triangulos, mas os vertices se conectam, para salvar memória, irei utilizar o ponto já definido.
-		// IndexBuffer é simplesmente isso
-		unsigned int indices[] = {
-			0, 1, 2,
-			2, 3, 0
-		};
-		*/
-		GLCall(glEnable(GL_BLEND));
-		// Irá pegar SRC_ALPHA vindo do Fragment Shader e vai fazer (1 - ele), para ter a real cor do fragmento // Utilizado para exibir pixels transparentes
-		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)); // Como OpenGL irá fazer o blend de Alpha Pixels
-
-		// Criar VAO
-		// Posso ter mais de um VAO, um para cada objeto que quero renderizar, assim eu não preciso ficar chamando as funções glVertexAttribPointer e tendo que reconfigurar tudo sempre
-		/*unsigned int vao;
-		GLCall(glGenVertexArrays(1,&vao));
-		GLCall(glBindVertexArray(vao));*/
-
-		/*VertexArray va;
-
-		// Esta função faz o mesmo que as linhas abaixo
-		//VertexBuffer vb(triangle_position, 4 * 2 * sizeof(float)); // Somente X e Y do retangulo
-		VertexBuffer vb(triangle_position, 4 * 4 * sizeof(float)); // X e Y do retangulo + Texture Coordinate
-
-		VertexBufferLayout layout;
-		layout.Push<float>(2); // Adicionei o x e y que vou adicionar nas posicoes // layout(position = 0) no shader
-		layout.Push<float>(2); // Adicionei a informação sobre o x e y do Texture Coordinate // layout(position = 1) no shader
-		va.AddBuffer(vb, layout);
-
-		// Quantidade Vertex Buffers que irei criar e onde eu vou armazenar a referencia (ID do buffer gerado)
-		/*unsigned int buffer;
-		GLCall(glGenBuffers(1, &buffer));
-		// Para usar o buffer eu preciso passar o tipo final dele e ID dele
-		GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-		// Após selecionar, preciso colocar dados dentro do Buffer
-		GLCall(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), triangle_position, GL_STATIC_DRAW));*/
-		// Definição de atributos (Posicao)
-		// 0 é o indice (primeiro atributo)
-		// 2 é o tamanho que representa cada vertex no vetor, X e Y
-		// GL_FLOAT é o tipo da variável que eu tenho
-		// GL_FALSE é se quero normalizar ou não, o float já está normalizado (Valor entre 0 e 1)
-		// stride é a quantidade de bytes que temos separando cada vertex (no caso X e Y, cada um 4 bytes, sendo 8 no total)
-		// 0 é a posição (ponteiro) onde irá começar a analisar o vetor para poder ler os valores (Já defini em glBufferData qual o vetor)
-		//GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
-		// A função vai utilizar o index 0 para habilitar a leitura do array e o OpenGL saber como interpretar os dados fornecidos
-		//GLCall(glEnableVertexAttribArray(0)); // Como funciona como máquina de estado, eu não preciso necessariamente habilitar antes de glVertexAttribPointer
-		// ** Vertex Array Objects ** -> O indice 0 das funções acima estão relacionadas ao VAO, no Core_Profile eu preciso instanciar um VAO antes para poder utilizar
-
-
-		//IndexBuffer ib(indices, 6);
-		// Utilização de um IndexBuffer
-		/*unsigned int ibo; // ID do meu IndexBuffer
-		GLCall(glGenBuffers(1, &ibo));
-		// Uso outro tipo de buffer, o GL_ELEMENT_ARRAY_BUFFER
-		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-		// Após selecionar, preciso colocar dados dentro do Buffer (Sao 6 indices)
-		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));*/
-
-		/*// Shader
-		std::string vertexShader = R"vertexShader(
-        #version 330 core
-
-        layout(location = 0) in vec4 position;
-
-        void main()
-        {
-            gl_Position = position;
-        }
-    )vertexShader";
-		/*std::string vertexShader =
-			// https://en.wikipedia.org/wiki/OpenGL_Shading_Language
-			// https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)
-			"#version 330 core\n"
-			"\n"
-			// layout(location = 0) => É o meu vertexPointer na posição 0, definido na função glVertexAttribPointer
-			// vec4 = gl_Position é um vec4, mesmo eu tendo um triangulo vec2
-			"layout(location = 0) in vec4 position;\n"
-			"\n"
-			"void main()\n"
-			"{\n"
-				// Vai pegar ambos x e y que tenho definido e fazer o cast para vec4
-			"   gl_Position = position;\n"
-			"}\n"
-			;*/
-		/*std::string fragmentShader =
-			"#version 330 core\n"
-			"\n"
-			"layout(location = 0) out vec4 color;\n"
-			"\n"
-			"void main()\n"
-			"{\n"
-			// Vou adicionar a cor vermelha em todos os pixels do meu triangulo
-			"   color = vec4(1.0, 0.0, 0.0, 1.0);\n"
-			"}\n"
-			;
-		//unsigned int shader = CreateShader(vertexShader, fragmentShader);
-		//GLCall(glUseProgram(shader));
-
-		// Maths
-		// glm::mat4 = Matriz 4x4
-		//glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
-		// Defino os limites da minha projeçao ortográfica
-		// Projection Matrix => Normalização de 3D para 2D
-		//glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -1.5f, 1.5f, -1.0f, 1.0f);
-		glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
-		//glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -0.75f, 0.75f, -1.0f, 1.0f);
-
-		// View Matrix => Posição da camera
-		// Irei mover a camera para a esquerda, isso faz com que os objetos na tela apareçam mais a direita
-		glm::mat4 view(1.0f);
-		view = glm::translate(view, glm::vec3(0, 0, 0)); // Movi a câmera para a direita (Negativo)
-		//glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
-
-		// Model Matrix => Posição
-		//glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
-		
-		// Isto cria a transformation para posicionar meu objeto
-		//glm::mat4 mvp = proj * view * model;
-		//glm::mat4 mvp = proj;
-
-		Shader shader("res/shaders/Basic.shader");
-		shader.Bind();
-		/*ShaderProgramSource source = Shader::ParseShader("res/shaders/Basic.shader");
-		unsigned int shaderFile = Shader::CreateShader(source.vertexSource, source.fragmentSource);
-		GLCall(glUseProgram(shader));*/
-
-		//shader.SetUniform4f("u_Color", 0.3f, 0.2f, 0.0f, 1.0f);
-		//GLCall(int uniform_location = glGetUniformLocation(shaderFile, "u_Color")); // Se retornar -1 é porque não encontrou o uniform
-		//ASSERT(uniform_location != -1);
-		// Eu preciso executar esta função depois de escolher um shader, pois nele estará meu uniform
-		//GLCall(glUniform4f(uniform_location, 0.3f, 0.2f, 0.0f, 1.0f));
-
-		/*Texture texture("res/textures/sonarqube_logo.png");
-		texture.Bind();
-		shader.SetUniform1i("u_Texture", 0); // o 0 é do Slot da texture passado em Bind
-		//shader.SetUniformMat4f("u_MVP", proj);
-		// Passo todo meu MVP para ter todas as matrizes multiplicadas
-		//shader.SetUniformMat4f("u_MVP", mvp);
-
-		va.Unbind();
-		shader.Unbind();
-		vb.Unbind();
-		ib.Unbind();
-		//GLCall(glUseProgram(0));*/
 
 		Renderer renderer;
 
@@ -330,13 +171,13 @@ int main(void)
 		currentTest = testMenu;
 
 		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
+		testMenu->RegisterTest<test::TestTexture2D>("Texture 2D");
 
 		/*bool show_demo_window = true;
 		bool show_another_window = false;
 		ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);*/
 
-		/*glm::vec3 translationA(200, 200, 0);
-		glm::vec3 translationB(200, 400, 0);
+		/*
 		float red = 0.0f;
 		float increment = 0.05f;*/
 		/* Loop until the user closes the window */
@@ -391,51 +232,10 @@ int main(void)
 			}
 			red += increment;*/
 			/*
-			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
-				//glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
-				//glm::mat4 mvp = proj * view * model;
-				glm::mat4 mvp = proj * view * model;
-
-				shader.SetUniformMat4f("u_MVP", mvp);
-			}
-
-			renderer.Draw(va, ib, shader);
 			
-			// Desenhando um segundo objeto
-			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
-				glm::mat4 mvp = proj * view * model;
-				shader.SetUniformMat4f("u_MVP", mvp);
-			}
-			renderer.Draw(va, ib, shader);
 			// Para não ter que ficar limpando log, utilizo essa macro para fazer isso sempre
 			//GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
-			// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-			// Our state
-			{
-				//static float f = 0.0f;
-				//static int counter = 0;
-
-				//ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-				//ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-				//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-				//ImGui::Checkbox("Another Window", &show_another_window);
-
-				ImGui::SliderFloat3("Translation A", &translationA.x, 0.0f, 960.0f);            // Edit 1 float using a slider from 0.0f to 960.0f
-				ImGui::SliderFloat3("Translation B", &translationB.x, 0.0f, 960.0f);
-				//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-				//if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-					//counter++;
-				//ImGui::SameLine();
-				//ImGui::Text("counter = %d", counter);
-
-				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-				//ImGui::End();
-			}
 			*/
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
