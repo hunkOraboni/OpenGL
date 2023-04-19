@@ -75,11 +75,23 @@
     <ClCompile Include="src\tests\TestTexture2D.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestBatchRenderingTexture2D.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\TestBatchRenderingSameColor2D.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\TestBatchRenderingDifferentColor2D.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\TestBatchRenderingDifferentTexture2D.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
     <None Include=".gitignore" />
-    <None Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\BasicTexture.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl">
       <Filter>Arquivos de Cabeçalho</Filter>
     </None>
@@ -488,6 +500,9 @@
     <None Include="src\vendor\glm\gtx\wrap.inl">
       <Filter>Arquivos de Cabeçalho</Filter>
     </None>
+    <None Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\BasicDifferentColor.shader" />
+    <None Include="res\shaders\BasicDifferentTexture.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">
@@ -1402,9 +1417,24 @@
     <ClInclude Include="src\tests\TestTexture2D.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\TestBatchRenderingTexture2D.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\TestBatchRenderingSameColor2D.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\TestBatchRenderingDifferentColor2D.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\TestBatchRenderingDifferentTexture2D.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sonarqube_logo.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="res\textures\background.png">
       <Filter>Arquivos de Recurso</Filter>
     </Image>
   </ItemGroup>

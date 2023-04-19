@@ -172,6 +172,10 @@ int main(void)
 
 		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 		testMenu->RegisterTest<test::TestTexture2D>("Texture 2D");
+		testMenu->RegisterTest<test::TestBatchRenderingTexture2D>("Batch Rendering - Texture 2D");
+		testMenu->RegisterTest<test::TestBatchRenderingDifferentTexture2D>("Batch Rendering - Different Texture 2D");
+		testMenu->RegisterTest<test::TestBatchRenderingSameColor2D>("Batch Rendering - Same Color 2D");
+		testMenu->RegisterTest<test::TestBatchRenderingDifferentColor2D>("Batch Rendering - Different Color 2D");
 
 		/*bool show_demo_window = true;
 		bool show_another_window = false;

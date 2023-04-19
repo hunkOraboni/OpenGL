@@ -134,6 +134,10 @@ colors for each output to be combined in various ways.
 ## 20 - Criação de Testes
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remoção dos códigos da main e colocando em funções de teste para testar funcionalidades específicas
 
+## 21 - Batch Rendering
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adiciono todos os meus objetos em um VertexBuffer e IndexBuffer e chamo minha DrawCall uma única vez.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Para conseguir fazer isso irei adicionar posiçoes a mais no meu VertexBuffer e no IndexBuffer, na hora do DrawCall irei aumentar também o número de vertex à serem desenhados.
+
 docs.gl = Link com uma boa documentação<br>
 https://www.khronos.org/opengl/
 https://github.com/nothings/stb/blob/master/stb_image.h

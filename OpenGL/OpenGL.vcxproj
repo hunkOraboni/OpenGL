@@ -160,8 +160,12 @@
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\tests\TestBatchRenderingDifferentColor2D.cpp" />
+    <ClCompile Include="src\tests\TestBatchRenderingDifferentTexture2D.cpp" />
+    <ClCompile Include="src\tests\TestBatchRenderingTexture2D.cpp" />
     <ClCompile Include="src\tests\Test.cpp" />
     <ClCompile Include="src\tests\TestClearColor.cpp" />
+    <ClCompile Include="src\tests\TestBatchRenderingSameColor2D.cpp" />
     <ClCompile Include="src\tests\TestTexture2D.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
@@ -180,6 +184,9 @@
     <None Include=".gitignore" />
     <None Include="README.md" />
     <None Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\BasicDifferentColor.shader" />
+    <None Include="res\shaders\BasicDifferentTexture.shader" />
+    <None Include="res\shaders\BasicTexture.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />
     <None Include="src\vendor\glm\detail\func_exponential.inl" />
@@ -322,6 +329,10 @@
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\tests\TestBatchRenderingDifferentColor2D.h" />
+    <ClInclude Include="src\tests\TestBatchRenderingDifferentTexture2D.h" />
+    <ClInclude Include="src\tests\TestBatchRenderingTexture2D.h" />
+    <ClInclude Include="src\tests\TestBatchRenderingSameColor2D.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
     <ClInclude Include="src\tests\Test.h" />
     <ClInclude Include="src\tests\TestClearColor.h" />
@@ -624,6 +635,7 @@
     <ClInclude Include="src\VertexBufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\textures\background.png" />
     <Image Include="res\textures\sonarqube_logo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

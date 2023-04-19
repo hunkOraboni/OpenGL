@@ -20,12 +20,15 @@ void main()
 
 layout(location = 0) out vec4 color;
 
-uniform vec4 u_Color;
+//uniform vec4 u_Color;
+uniform sampler2D u_Texture; // Irá armazenar as informações de coordenada da minha textura
 
 in vec2 v_TexCoord;
 
 void main()
 {
-    //color = vec4(0.0, 1.0, 0.0, 1.0);
-    color = u_Color; // Definindo as cores manualmente
+   //color = vec4(0.0, 1.0, 0.0, 1.0);
+    //color = u_Color; // Definindo as cores manualmente
+    vec4 texColor = texture(u_Texture, v_TexCoord); // O fragment Shader é executado por cada pixel, entao ele interpola as coordenadas vinda dos Vertex para pegar a posicao certa da textura
+    color = texColor; // Pegando a cor da textura
 }
