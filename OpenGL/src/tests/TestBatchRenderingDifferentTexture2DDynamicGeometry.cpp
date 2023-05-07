@@ -22,7 +22,10 @@ namespace test {
 			2, 3, 0,
 
 			4, 5, 6,
-			6, 7, 4
+			6, 7, 4,
+
+			8, 9, 10,
+			10, 11, 8
 		};
 
 		GLCall(glEnable(GL_BLEND));
@@ -30,11 +33,14 @@ namespace test {
 
 		// Criação como Ponteiros pois exportei para uma classe de teste
 		m_Shader = std::make_unique<Shader>("res/shaders/BasicDifferentTexture.shader");
-		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, 12);
+		//m_IndexBuffer = std::make_unique<IndexBuffer>(indices, sizeof(indices));
+		int qtIndices = sizeof(indices) / sizeof(unsigned int);
+		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, qtIndices) ;
 		m_VAO = std::make_unique<VertexArray>();
 
 		//VertexBuffer vb(triangle_position, 4 * 4 * sizeof(float)); // X e Y do retangulo + Texture Coordinate
-		m_VertexBuffer = std::make_unique<VertexBuffer>(nullptr, sizeof(Vertex) * 8, GL_DYNAMIC_DRAW);
+		int qtQuads = sizeof(indices) / 6;
+		m_VertexBuffer = std::make_unique<VertexBuffer>(nullptr, sizeof(Vertex) * qtQuads, GL_DYNAMIC_DRAW);
 		//m_VertexBuffer = std::make_unique<VertexBuffer>(triangle_position, sizeof(Vertex) * 8, GL_DYNAMIC_DRAW);
 		VertexBufferLayout layout;
 		layout.Push<float>(2); // Adicionei o x e y que vou adicionar nas posicoes // layout(position = 0) no shader
@@ -108,10 +114,12 @@ namespace test {
 
 		auto q0 = CreateQuad(m_TranslationA.x, m_TranslationA.y, 0.0f);
 		auto q1 = CreateQuad(m_TranslationB.x, m_TranslationB.y, 1.0f);
+		auto q2 = CreateQuad(0.0f, 200.0f, 0.0f);
 
-		Vertex triangle_position[8];
+		Vertex triangle_position[12];
 		memcpy(triangle_position, q0.data(), q0.size() * sizeof(Vertex));
 		memcpy(triangle_position + q0.size(), q1.data(), q1.size() * sizeof(Vertex));
+		memcpy(triangle_position + q0.size() + q1.size(), q2.data(), q2.size() * sizeof(Vertex));
 
 		m_VertexBuffer->SetBufferSubData(triangle_position, sizeof(triangle_position));
 	}
