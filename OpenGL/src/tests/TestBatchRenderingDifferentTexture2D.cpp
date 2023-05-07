@@ -77,8 +77,7 @@ namespace test {
 		if (!m_ButtonClicked) {
 			m_Texture_SonarQube->Bind(0);
 			m_Texture_Background->Bind(1);
-		}
-		else {
+		} else {
 			m_Texture_SonarQube->Bind(1);
 			m_Texture_Background->Bind(0);
 		}

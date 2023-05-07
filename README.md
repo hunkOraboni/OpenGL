@@ -138,6 +138,16 @@ colors for each output to be combined in various ways.
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adiciono todos os meus objetos em um VertexBuffer e IndexBuffer e chamo minha DrawCall uma única vez.
 - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Para conseguir fazer isso irei adicionar posiçoes a mais no meu VertexBuffer e no IndexBuffer, na hora do DrawCall irei aumentar também o número de vertex à serem desenhados.
 
+## 22 - Dynamic Geometry
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Aqui consigo passar os dados do meu VertexBuffer de forma dinamica.
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Para isso preciso preciso definir meu Buffer para uso com GL_DYNAMIC_DRAW (Onde ele terá os dados alterado várias vezes e servirá para rasterizar na tela)
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Criado teste TestBatchRenderingDifferentTexture2DDynamicGeometry com utilização deste método
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Basicamente eu aloco o espaço na VRAM sem necessariamente informar os dados
+```
+m_VertexBuffer = std::make_unique<VertexBuffer>(nullptr, sizeof(Vertex) * 8, GL_DYNAMIC_DRAW);
+```
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Durante a execução eu defino os pontos dos meus Vertex, assim consigo alterá-los em tempo de execução, não somente na criação
+
 docs.gl = Link com uma boa documentação<br>
 https://www.khronos.org/opengl/
 https://github.com/nothings/stb/blob/master/stb_image.h

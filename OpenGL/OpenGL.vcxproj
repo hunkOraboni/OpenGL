@@ -162,6 +162,7 @@
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\tests\TestBatchRenderingDifferentColor2D.cpp" />
     <ClCompile Include="src\tests\TestBatchRenderingDifferentTexture2D.cpp" />
+    <ClCompile Include="src\tests\TestBatchRenderingDifferentTexture2DDynamicGeometry.cpp" />
     <ClCompile Include="src\tests\TestBatchRenderingTexture2D.cpp" />
     <ClCompile Include="src\tests\Test.cpp" />
     <ClCompile Include="src\tests\TestClearColor.cpp" />
@@ -331,6 +332,7 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\tests\TestBatchRenderingDifferentColor2D.h" />
     <ClInclude Include="src\tests\TestBatchRenderingDifferentTexture2D.h" />
+    <ClInclude Include="src\tests\TestBatchRenderingDifferentTexture2DDynamicGeometry.h" />
     <ClInclude Include="src\tests\TestBatchRenderingTexture2D.h" />
     <ClInclude Include="src\tests\TestBatchRenderingSameColor2D.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
